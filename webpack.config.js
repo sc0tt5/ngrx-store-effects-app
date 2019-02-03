@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const typescript = require('typescript');
 const { AotPlugin } = require('@ngtools/webpack');
 const jsonServer = require('json-server');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const rules = [
   { test: /\.html$/, loader: 'html-loader' },
@@ -16,10 +17,10 @@ const plugins = [
       NODE_ENV: JSON.stringify(process.env.NODE_ENV),
     },
   }),
-  new webpack.optimize.CommonsChunkPlugin({
+  /* new webpack.optimize.CommonsChunkPlugin({
     name: 'vendor',
     minChunks: module => module.context && /node_modules/.test(module.context),
-  }),
+  }), */
 ];
 
 if (process.env.NODE_ENV === 'production') {
@@ -36,7 +37,7 @@ if (process.env.NODE_ENV === 'production') {
       minimize: true,
       debug: false,
     }),
-    new webpack.optimize.UglifyJsPlugin({
+    /* new webpack.optimize.UglifyJsPlugin({
       sourceMap: true,
       beautify: false,
       mangle: {
@@ -55,7 +56,7 @@ if (process.env.NODE_ENV === 'production') {
         warnings: false,
       },
       comments: false,
-    })
+    }) */
   );
 } else {
   rules.push({
@@ -101,6 +102,35 @@ module.exports = {
   devtool: 'sourcemap',
   entry: {
     app: ['zone.js/dist/zone', './src/main.ts'],
+  },
+  optimization: {
+    minimizer: [new UglifyJsPlugin({
+        chunkFilter: (chunk) => {
+          // Exclude uglification for the `vendor` chunk
+          if (chunk.name === 'vendor') {
+            return false;
+          }
+          return true;
+        },
+        uglifyOptions: {
+          compress: {
+            unused: true,
+            dead_code: true,
+            drop_debugger: true,
+            conditionals: true,
+            evaluate: true,
+            drop_console: true,
+            sequences: true,
+            booleans: true,
+            warnings: false,
+          },
+          comments: false,
+          sourceMap: true,
+          beautify: false,
+          ie8: false,
+          mangle: true
+        },
+    })],
   },
   output: {
     filename: '[name].js',
