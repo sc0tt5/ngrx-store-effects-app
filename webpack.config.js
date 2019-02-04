@@ -8,15 +8,15 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const rules = [
   { test: /\.html$/, loader: 'html-loader' },
   { test: /\.scss$/, loaders: ['raw-loader', 'sass-loader'] },
-  { test: /\.(jpe?g|png|gif|svg)$/i, loader: 'file-loader' },
+  { test: /\.(jpe?g|png|gif|svg)$/i, loader: 'file-loader' }
 ];
 
 const plugins = [
   new webpack.DefinePlugin({
     'process.env': {
-      NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-    },
-  }),
+      NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+    }
+  })
   /* new webpack.optimize.CommonsChunkPlugin({
     name: 'vendor',
     minChunks: module => module.context && /node_modules/.test(module.context),
@@ -26,17 +26,17 @@ const plugins = [
 if (process.env.NODE_ENV === 'production') {
   rules.push({
     test: /\.ts$/,
-    loaders: ['@ngtools/webpack'],
+    loaders: ['@ngtools/webpack']
   });
   plugins.push(
     new AotPlugin({
       tsConfigPath: './tsconfig.json',
-      entryModule: 'src/app/app.module#AppModule',
+      entryModule: 'src/app/app.module#AppModule'
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: true,
-      debug: false,
-    }),
+      debug: false
+    })
     /* new webpack.optimize.UglifyJsPlugin({
       sourceMap: true,
       beautify: false,
@@ -61,11 +61,7 @@ if (process.env.NODE_ENV === 'production') {
 } else {
   rules.push({
     test: /\.ts$/,
-    loaders: [
-      'awesome-typescript-loader',
-      'angular-router-loader',
-      'angular2-template-loader',
-    ],
+    loaders: ['awesome-typescript-loader', 'angular-router-loader', 'angular2-template-loader']
   });
   plugins.push(
     new webpack.NamedModulesPlugin(),
@@ -77,6 +73,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 module.exports = {
+  mode: 'development',
   cache: true,
   context: __dirname,
   devServer: {
@@ -91,21 +88,22 @@ module.exports = {
       hash: false,
       timings: false,
       modules: false,
-      warnings: false,
+      warnings: false
     },
     publicPath: '/build/',
     port: 3000,
     setup: function(app) {
       app.use('/api', jsonServer.router('db.json'));
-    },
+    }
   },
   devtool: 'sourcemap',
   entry: {
-    app: ['zone.js/dist/zone', './src/main.ts'],
+    app: ['zone.js/dist/zone', './src/main.ts']
   },
   optimization: {
-    minimizer: [new UglifyJsPlugin({
-        chunkFilter: (chunk) => {
+    minimizer: [
+      new UglifyJsPlugin({
+        chunkFilter: chunk => {
           // Exclude uglification for the `vendor` chunk
           if (chunk.name === 'vendor') {
             return false;
@@ -122,35 +120,36 @@ module.exports = {
             drop_console: true,
             sequences: true,
             booleans: true,
-            warnings: false,
+            warnings: false
           },
           comments: false,
           sourceMap: true,
           beautify: false,
           ie8: false,
           mangle: true
-        },
-    })],
+        }
+      })
+    ]
   },
   output: {
     filename: '[name].js',
     chunkFilename: '[name]-chunk.js',
     publicPath: '/build/',
-    path: path.resolve(__dirname, 'build'),
+    path: path.resolve(__dirname, 'build')
   },
   node: {
     console: false,
     global: true,
     process: true,
     Buffer: false,
-    setImmediate: false,
+    setImmediate: false
   },
   module: {
-    rules,
+    rules
   },
   resolve: {
     extensions: ['.ts', '.js'],
-    modules: ['src', 'node_modules'],
+    modules: ['src', 'node_modules']
   },
-  plugins,
+  plugins
 };

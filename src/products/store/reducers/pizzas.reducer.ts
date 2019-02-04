@@ -1,5 +1,7 @@
+import { PizzaState } from './pizzas.reducer';
 import * as fromPizzas from '../actions/pizzas.action';
 import { Pizza } from './../../models/pizza.model';
+import { state } from '@angular/animations';
 
 export interface PizzaState {
   data: Pizza[];
@@ -8,7 +10,50 @@ export interface PizzaState {
 }
 
 export const initialState: PizzaState = {
-  data: [],
+  data: [
+    {
+      name: "Seaside Surfin'",
+      toppings: [
+        {
+          id: 6,
+          name: 'mushroom'
+        },
+        {
+          id: 7,
+          name: 'olive'
+        },
+        {
+          id: 2,
+          name: 'bacon'
+        },
+        {
+          id: 3,
+          name: 'basil'
+        },
+        {
+          id: 1,
+          name: 'anchovy'
+        },
+        {
+          id: 8,
+          name: 'onion'
+        },
+        {
+          id: 11,
+          name: 'sweetcorn'
+        },
+        {
+          id: 9,
+          name: 'pepper'
+        },
+        {
+          id: 5,
+          name: 'mozzarella'
+        }
+      ],
+      id: 2
+    }
+  ],
   loaded: false,
   loading: false
 };
@@ -41,3 +86,8 @@ export function reducer(state = initialState, action: fromPizzas.PizzasAction): 
 
   return state;
 }
+
+// selectors
+export const getPizzasLoading = (state: PizzaState) => state.loading;
+export const getPizzasLoaded = (state: PizzaState) => state.loaded;
+export const getPizzas = (state: PizzaState) => state.data;
