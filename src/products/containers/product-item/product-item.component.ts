@@ -30,14 +30,14 @@ import { Topping } from '../../models/topping.model';
 })
 export class ProductItemComponent implements OnInit {
   // pizza: Pizza; // changing pizza over to an observable
-  pizza$: Observable<Pizza>; // pizza to pizza$ and update in template as well (also set to Observable)
+  pizza$: Observable<Pizza>; // pizza to pizza$ (also set to Observable) and update in template as well
   visualise: Pizza;
   toppings: Topping[];
 
   constructor(private store: Store<fromStore.ProductsState>) {}
 
   ngOnInit() {
-    // because we're now selecting data from the store we will at the $ suffix
+    // because we're now selecting data from the store we will add the $ suffix
     // assign the selector
     this.pizza$ = this.store.select(fromStore.getSelectedPizza); // we're using a query via our selector
   }
