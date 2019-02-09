@@ -3,10 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { StoreRouterConnectingModule, RouterStateSerializer } from '@ngrx/router-store';
 import { StoreModule, MetaReducer } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
-import { reducers } from './store';
+// we will provide a RouterStateSerializer and use our CustomSerializer
+import { reducers, CustomSerializer } from './store';
 
 // not used in production
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -37,10 +39,14 @@ export const ROUTES: Routes = [
     BrowserModule,
     BrowserAnimationsModule,
     RouterModule.forRoot(ROUTES),
-    StoreModule.forRoot(reducers, { metaReducers }),
+    StoreModule.forRoot(reducers, { metaReducers }), // reducers here = router reducers
     EffectsModule.forRoot([]),
+    StoreRouterConnectingModule,
     environment.development ? StoreDevtoolsModule.instrument() : []
   ],
+  // we're registering a provider, providing the RouterStateSerializer, and use our class CustomSerializer
+  // so we have full control of what is bound to our state tree
+  providers: [{ provide: RouterStateSerializer, useClass: CustomSerializer }],
   declarations: [AppComponent],
   bootstrap: [AppComponent]
 })
