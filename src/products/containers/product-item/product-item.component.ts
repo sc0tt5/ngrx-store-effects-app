@@ -17,7 +17,7 @@ import { Topping } from '../../models/topping.model';
           (async pipe essentially subscribes directly from the template) -->
       <pizza-form
         [pizza]="pizza$ | async"
-        [toppings]="toppings"
+        [toppings]="toppings$ | async"
         (selected)="onSelect($event)"
         (create)="onCreate($event)"
         (update)="onUpdate($event)"
@@ -32,7 +32,7 @@ export class ProductItemComponent implements OnInit {
   // pizza: Pizza; // changing pizza over to an observable
   pizza$: Observable<Pizza>; // pizza to pizza$ (also set to Observable) and update in template as well
   visualise: Pizza;
-  toppings: Topping[];
+  toppings$: Observable<Topping[]>;
 
   constructor(private store: Store<fromStore.ProductsState>) {}
 
@@ -41,6 +41,7 @@ export class ProductItemComponent implements OnInit {
     // because we're now selecting data from the store we will add the $ suffix
     // assign the selector
     this.pizza$ = this.store.select(fromStore.getSelectedPizza); // we're using a query via our selector
+    this.toppings$ = this.store.select(fromStore.getAllToppings);
   }
 
   onSelect(event: number[]) {}
