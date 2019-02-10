@@ -37,6 +37,7 @@ export class ProductItemComponent implements OnInit {
   constructor(private store: Store<fromStore.ProductsState>) {}
 
   ngOnInit() {
+    this.store.dispatch(new fromStore.LoadToppings());
     // because we're now selecting data from the store we will add the $ suffix
     // assign the selector
     this.pizza$ = this.store.select(fromStore.getSelectedPizza); // we're using a query via our selector
