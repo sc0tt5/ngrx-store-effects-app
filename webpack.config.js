@@ -17,10 +17,6 @@ const plugins = [
       NODE_ENV: JSON.stringify(process.env.NODE_ENV)
     }
   })
-  /* new webpack.optimize.CommonsChunkPlugin({
-    name: 'vendor',
-    minChunks: module => module.context && /node_modules/.test(module.context),
-  }), */
 ];
 
 if (process.env.NODE_ENV === 'production') {
@@ -37,26 +33,6 @@ if (process.env.NODE_ENV === 'production') {
       minimize: true,
       debug: false
     })
-    /* new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,
-      beautify: false,
-      mangle: {
-        screw_ie8: true,
-      },
-      compress: {
-        unused: true,
-        dead_code: true,
-        drop_debugger: true,
-        conditionals: true,
-        evaluate: true,
-        drop_console: true,
-        sequences: true,
-        booleans: true,
-        screw_ie8: true,
-        warnings: false,
-      },
-      comments: false,
-    }) */
   );
 } else {
   rules.push({
