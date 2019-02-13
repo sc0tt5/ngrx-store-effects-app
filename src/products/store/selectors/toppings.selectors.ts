@@ -4,15 +4,20 @@ import * as fromRoot from '../../../app/store';
 import * as fromFeature from '../reducers';
 import * as fromToppings from '../reducers/toppings.reducer';
 
-export const getToppingState = createSelector(
+export const getToppingsState = createSelector(
   fromFeature.getProductsState,
   (state: fromFeature.ProductsState) => state.toppings
 );
 
 // reference to entities, pass in getToppingState from above
 export const getToppingEntities = createSelector(
-  getToppingState,
+  getToppingsState,
   fromToppings.getToppingEntities
+);
+
+export const getSelectedToppings = createSelector(
+  getToppingsState,
+  fromToppings.getSelectedToppings
 );
 
 // pass in getToppingEntities from above
@@ -25,12 +30,12 @@ export const getAllToppings = createSelector(
 
 // pass in getToppingState from above
 export const getToppingsLoaded = createSelector(
-  getToppingState,
+  getToppingsState,
   fromToppings.getToppingsLoaded
 );
 
 // pass in getToppingState from above
 export const getToppingsLoading = createSelector(
-  getToppingState,
+  getToppingsState,
   fromToppings.getToppingsLoading
 );
