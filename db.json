@@ -131,6 +131,20 @@
         }
       ],
       "id": 3
+    },
+    {
+      "name": "test pizza",
+      "toppings": [
+        {
+          "id": 10,
+          "name": "pepperoni"
+        },
+        {
+          "id": 4,
+          "name": "chili"
+        }
+      ],
+      "id": 4
     }
   ]
 }
