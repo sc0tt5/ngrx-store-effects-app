@@ -2,6 +2,7 @@ import { PizzaState } from './pizzas.reducer';
 import * as fromPizzas from '../actions/pizzas.action';
 import { Pizza } from './../../models/pizza.model';
 import { state } from '@angular/animations';
+import { from } from 'rxjs';
 
 export interface PizzaState {
   entities: { [id: number]: Pizza };
@@ -55,6 +56,8 @@ export function reducer(state = initialState, action: fromPizzas.PizzasAction): 
       };
     }
 
+    // if update or create (first case will fall through)
+    case fromPizzas.UPDATE_PIZZA_SUCCESS:
     case fromPizzas.CREATE_PIZZA_SUCCESS: {
       const pizza = action.payload;
       const entities = {
