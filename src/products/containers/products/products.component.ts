@@ -7,6 +7,7 @@ import { Pizza } from '../../models/pizza.model';
 
 @Component({
   selector: 'products',
+  changeDetection: ChangeDetectionStrategy.OnPush, // this turns off change detection for this component
   styleUrls: ['products.component.scss'],
   template: `
     <div class="products">

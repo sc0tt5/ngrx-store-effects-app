@@ -10,6 +10,7 @@ import { Topping } from '../../models/topping.model';
 
 @Component({
   selector: 'product-item',
+  changeDetection: ChangeDetectionStrategy.OnPush, // this turns off change detection for this component
   styleUrls: ['product-item.component.scss'],
   template: `
     <div class="product-item">

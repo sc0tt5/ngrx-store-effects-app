@@ -5,15 +5,9 @@ import {
   EventEmitter,
   OnChanges,
   SimpleChanges,
-  ChangeDetectionStrategy,
+  ChangeDetectionStrategy
 } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  FormArray,
-  FormBuilder,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 
 import { map } from 'rxjs/operators';
 
@@ -22,69 +16,50 @@ import { Topping } from '../../models/topping.model';
 
 @Component({
   selector: 'pizza-form',
+  changeDetection: ChangeDetectionStrategy.OnPush, // this turns off change detection for this component
   styleUrls: ['pizza-form.component.scss'],
   template: `
     <div class="pizza-form">
       <form [formGroup]="form">
-      
         <label>
           <h4>Pizza name</h4>
-          <input 
-            type="text" 
+          <input
+            type="text"
             formControlName="name"
             placeholder="e.g. Pepperoni"
             class="pizza-form__input"
-            [class.error]="nameControlInvalid">
-          <div
-            class="pizza-form__error"
-            *ngIf="nameControlInvalid">
+            [class.error]="nameControlInvalid"
+          />
+          <div class="pizza-form__error" *ngIf="nameControlInvalid">
             <p>Pizza must have a name</p>
           </div>
         </label>
-      
+
         <ng-content></ng-content>
 
         <label>
           <h4>Select toppings</h4>
         </label>
         <div class="pizza-form__list">
-
-          <pizza-toppings
-            [toppings]="toppings"
-            formControlName="toppings">
-          </pizza-toppings>
-
+          <pizza-toppings [toppings]="toppings" formControlName="toppings"> </pizza-toppings>
         </div>
 
         <div class="pizza-form__actions">
-          <button
-            type="button"
-            class="btn btn__ok"
-            *ngIf="!exists"
-            (click)="createPizza(form)">
+          <button type="button" class="btn btn__ok" *ngIf="!exists" (click)="createPizza(form)">
             Create Pizza
           </button>
 
-          <button
-            type="button"
-            class="btn btn__ok"
-            *ngIf="exists"
-            (click)="updatePizza(form)">
+          <button type="button" class="btn btn__ok" *ngIf="exists" (click)="updatePizza(form)">
             Save changes
           </button>
 
-          <button
-            type="button"
-            class="btn btn__warning"
-            *ngIf="exists"
-            (click)="removePizza(form)">
+          <button type="button" class="btn btn__warning" *ngIf="exists" (click)="removePizza(form)">
             Delete Pizza
           </button>
         </div>
-
       </form>
     </div>
-  `,
+  `
 })
 export class PizzaFormComponent implements OnChanges {
   exists = false;
@@ -99,7 +74,7 @@ export class PizzaFormComponent implements OnChanges {
 
   form = this.fb.group({
     name: ['', Validators.required],
-    toppings: [[]],
+    toppings: [[]]
   });
 
   constructor(private fb: FormBuilder) {}
@@ -119,9 +94,7 @@ export class PizzaFormComponent implements OnChanges {
     }
     this.form
       .get('toppings')
-      .valueChanges.pipe(
-        map(toppings => toppings.map((topping: Topping) => topping.id))
-      )
+      .valueChanges.pipe(map(toppings => toppings.map((topping: Topping) => topping.id)))
       .subscribe(value => this.selected.emit(value));
   }
 
