@@ -4,6 +4,7 @@ import { of } from 'rxjs';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { map, switchMap, catchError } from 'rxjs/operators';
 
+import * as fromRoot from '../../../app/store';
 import * as pizzaActions from '../actions/pizzas.action';
 import * as fromServices from '../../services/pizzas.service';
 
@@ -36,6 +37,18 @@ export class PizzasEffects {
     )
   );
 
+  // this effect will enable us to auto redirect to the newly created pizza
+  @Effect()
+  createPizzaSuccess$ = this.actions$.pipe(ofType(pizzaActions.CREATE_PIZZA_SUCCESS)).pipe(
+    map((action: pizzaActions.CreatePizzaSuccess) => action.payload),
+    map(
+      pizza =>
+        new fromRoot.Go({
+          path: ['/products', pizza.id]
+        })
+    )
+  );
+
   @Effect()
   updatePizza$ = this.actions$.pipe(ofType(pizzaActions.UPDATE_PIZZA)).pipe(
     map((action: pizzaActions.UpdatePizza) => action.payload),
@@ -65,4 +78,17 @@ export class PizzasEffects {
         )
     )
   );
+
+  // this effect will enable us to auto redirect when delete or update
+  @Effect()
+  handlePizzaSuccess$ = this.actions$
+    .pipe(ofType(pizzaActions.UPDATE_PIZZA_SUCCESS, pizzaActions.REMOVE_PIZZA_SUCCESS))
+    .pipe(
+      map(
+        pizza =>
+          new fromRoot.Go({
+            path: ['/products']
+          })
+      )
+    );
 }
