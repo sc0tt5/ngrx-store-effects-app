@@ -9,7 +9,7 @@
     "build:production": "npm run clean && npm run build",
     "clean": "rimraf build",
     "start": "npm run build:dev",
-    "test": "webpack --mode development karma start ./karma.conf.js"
+    "test": "karma start ./karma.conf.js"
   },
   "devDependencies": {
     "@angular/compiler": "7.2.3",

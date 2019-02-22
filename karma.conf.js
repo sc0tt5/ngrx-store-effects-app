@@ -9,38 +9,39 @@ module.exports = config => {
     preprocessors: {
       'karma.entry.js': ['webpack', 'sourcemap'],
       '*.js': ['sourcemap'],
-      '**/*.spec.ts': ['sourcemap', 'webpack'],
+      '**/*.spec.ts': ['sourcemap', 'webpack']
     },
     reporters: ['spec'],
     webpack: {
+      mode: 'development',
       context: __dirname,
       devtool: 'sourcemap',
       module: {
         rules: [
           {
             test: /\.html$/,
-            loaders: ['raw-loader'],
+            loaders: ['raw-loader']
           },
           {
             test: /\.scss$/,
-            loaders: ['raw-loader', 'sass-loader'],
+            loaders: ['raw-loader', 'sass-loader']
           },
           {
             test: /\.ts$/,
-            loaders: ['awesome-typescript-loader', 'angular2-template-loader'],
-          },
-        ],
+            loaders: ['awesome-typescript-loader', 'angular2-template-loader']
+          }
+        ]
       },
       plugins: [
         new webpack.NamedModulesPlugin(),
         new webpack.SourceMapDevToolPlugin({
           filename: null,
-          test: /\.(ts|js)($|\?)/i,
-        }),
+          test: /\.(ts|js)($|\?)/i
+        })
       ],
       resolve: {
-        extensions: ['.ts', '.js'],
-      },
-    },
+        extensions: ['.ts', '.js']
+      }
+    }
   });
 };
